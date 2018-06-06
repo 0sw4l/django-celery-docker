@@ -1,0 +1,39 @@
+version: "2"
+services:
+  nginx:
+    build: ./nginx
+    ports:
+      - "8000:80"
+    volumes:
+      - ./app:/app
+
+  postgres:
+    image: postgres:10.1
+    env_file: .env
+
+  redis:
+    image: redis:4.0
+
+  app:
+    build: ./app
+    volumes:
+      - ./app:/app
+    env_file: .env
+    restart: on-failure
+    command: sh ./scripts/app.sh
+
+  worker:
+    build: ./app
+    volumes:
+      - ./app:/app
+    env_file: .env
+    restart: on-failure
+    command: sh ./scripts/worker.sh
+
+  beat:
+    build: ./app
+    volumes:
+      - ./app:/app
+    env_file: .env
+    restart: on-failure
+    command: sh ./scripts/beat.sh
