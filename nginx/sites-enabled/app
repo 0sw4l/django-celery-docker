@@ -1,0 +1,9 @@
+server {
+  client_max_body_size 4G;
+  listen 80;
+  server_name apps.domain.com;
+
+  location / {
+    alias /app/client/;
+  }
+}
